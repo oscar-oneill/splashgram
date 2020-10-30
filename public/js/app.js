@@ -1,9 +1,14 @@
 let objects = document.querySelector('.objects');
 
-async function fetchDefault() {
+const getPhotos = async () => {
     const response = await fetch('/photos');
     const data = await response.json();
-    console.log(data);
+
+    if (!data) {
+        console.log("There was a problem fetching photos.")
+    } else {
+        console.log("Photos loaded.")
+    }
 
     for (i = 0; i < data.length; i++) {
         let photoObject = {
@@ -12,7 +17,8 @@ async function fetchDefault() {
             image: data[i].urls.regular,
             alt: data[i].urls.alt_description,
             likes: data[i].likes,
-            imageID: data[i].id
+            imageID: data[i].id, 
+            user: data[i].user.username
         }
 
         objects.innerHTML += addNewObject(photoObject);
@@ -23,10 +29,10 @@ async function fetchDefault() {
                 <div class="container">
                     <div class="identifier">
                         <div class="profile-img">
-                            <img class="icon" src="${photoObject.profileImage}">
+                            <img class="icon" src="${photoObject.profileImage}"/>
                         </div>
                         <div class="nameplate">
-                            <span>${photoObject.fullname}</span>
+                            <a href="/users/${photoObject.user}"><span>${photoObject.fullname}</span></a>
                         </div>
                     </div>
                     <div class="photo-box">
@@ -43,7 +49,7 @@ async function fetchDefault() {
     }
 }
 
-fetchDefault();
+getPhotos();
 
 form.addEventListener('submit', e => {
     e.preventDefault();
@@ -56,8 +62,7 @@ form.addEventListener('submit', e => {
 
 const search = async (inputRequest) => {
     try {
-        console.log('Search query:', inputRequest);
-        const response = await fetch('/api/search', {
+        const response = await fetch('/search', {
             method: 'POST', 
             headers: {
                 'Accept': 'application/json',
@@ -66,12 +71,9 @@ const search = async (inputRequest) => {
             body: JSON.stringify({ inputRequest })
         })
 
-        console.log(response)
         const res = await response.json();
-
-
-        console.log(res)
         showData(res);
+        
     } catch (error) {
         console.log('Message error:', error);
     }
@@ -87,7 +89,7 @@ const showData = (res) => {
                                 <img class="icon" src="${e.user.profile_image.large}">
                             </div>
                             <div class="nameplate">
-                                <span>${e.user.name}</span>
+                                <a href="/users/${e.user.username}"><span>${e.user.name}</span></a>
                             </div>
                         </div>
                         <div class="photo-box">
