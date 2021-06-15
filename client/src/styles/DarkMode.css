@@ -1,0 +1,17 @@
+#lightswitch {
+  border: none;
+  outline: none;
+  background: transparent;
+  height: auto;
+  width: auto;
+  font-family: 'Founders Grotesk Medium';
+  font-size: 18px;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#lightswitch:hover {
+  color: #7fffd4;
+}
+

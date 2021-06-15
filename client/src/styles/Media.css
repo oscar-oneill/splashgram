@@ -1,0 +1,300 @@
+.container {
+    height: auto;
+    width: 100%;
+    top: 10px;
+    position: relative;
+    margin-top: 15px;
+}
+
+.identifier {
+    height: 50px;
+    width: 100%;
+    background: var(--navigation);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+}
+
+.profile-img {
+    height: 35px;
+    width: 35px;
+    background: transparent;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.icon {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+}
+
+.nameplate {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 0;
+    margin-left: 5px;
+    height: auto;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo-box {
+    height: auto;
+    width: 100vw;
+    position: relative;
+    display: flex;
+}
+
+.photo-box img {
+    height: 50%;
+    width: 100%;
+}
+
+.info-button {
+    position: absolute;
+    right: 10px;
+    font-size: 18px;
+}
+
+.info-pane {
+    height: 100%;
+    width: inherit;
+    background: rgba(17, 24, 36, 0.589);
+    position: absolute;
+    display: none;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.divider {
+    margin: 10px;
+}
+
+.activity {
+    height: 50px;
+    width: 100%;
+    background: var(--navigation);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.activity-btn {
+    display: flex;
+}
+
+.activity-btn i {
+    position: relative;
+    left: 10px;
+    color: var(--text-color);
+    margin-right: 5px;
+}
+
+.fas.fa-heart.active {
+    color: var(--like);
+}
+
+.likes {
+    display: inline-block;
+    font-family: 'Founders Grotesk Medium';
+    font-size: 12px;
+    position: relative;
+    bottom: 2px;
+    margin-left: 3px;
+    color: var(--text-color);
+}
+
+.options-btn {
+    font-family: 'Founders Grotesk Medium';
+    font-size: 12px;
+    position: relative;
+    bottom: 2px;
+    margin-left: 3px;
+}
+
+.show-location {
+    font-family: 'Founders Grotesk Medium';
+    font-size: 12px;
+    position: relative;
+    margin-left: 3px;
+    margin-top: 5px;
+}
+
+.hide-location {
+    display: none;
+}
+
+.shelf {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    right: 10px;
+}
+
+.exif_data {
+    display: none;
+}
+
+.exif_data.active {
+    height: auto;
+    width: 100%;
+    display: grid;
+    padding: 10px;
+    background: var(--options);
+    color: var(--text-color);
+    position: absolute;
+    bottom: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.exif_data ul {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.exif_data ul li {
+    margin-bottom: 5px;
+}
+
+.photo-options {
+    display: none;
+}
+
+.photo-options.active {
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background: var(--options);
+    color: var(--text-color);
+    position: absolute;
+    bottom: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.options_list li {
+    margin-bottom: 13px;
+    cursor: pointer;
+}
+
+.options_list li:nth-child(4) {
+    margin-bottom: 0px;
+}
+
+.collection-btn {
+    display: none;
+}
+
+.collection-btn.active {
+    display: flex;
+}
+
+.collections {
+    display: none;
+    position: absolute;
+}
+
+.collections.active {
+    height: 250px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background: var(--options);
+    color: var(--text-color);
+    /* position: absolute; */
+    bottom: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    overflow-y: scroll;
+}
+
+.collections-top {
+    display: flex;
+    flex-direction: column;
+    top: 150px;
+}
+
+.collections ul li {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.fa-check-circle {
+    color: var(--like);
+    transition: 0.3s ease-in-out;
+}
+
+.fa-plus-circle {
+    transition: 0.3s ease-in-out;
+}
+
+@media screen and (min-width: 427px) {
+    .objects {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container, .photo-box {
+        width: 426px;
+        height: auto;
+    }
+
+    .photo-box img {
+        width: 100%;
+        height: 50%;
+    }
+
+    .likes {
+        letter-spacing: 0px;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .objects {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container, .photo-box {
+        height: auto;
+    }
+
+    .photo-box img {
+        width: 100%;
+        height: 50%;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .objects {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container, .photo-box {
+        width: 725px;
+        height: auto;
+    }
+
+    .photo-box img {
+        width: 100%;
+        height: 50%;
+    }
+}

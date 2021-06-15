@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'Founders Grotesk Medium';
+  src: url('./fonts/founders-grotesk-medium.woff');
+}
+
+@font-face {
+  font-family: 'Founders Grotesk Light';
+  src: url('./fonts/founders-grotesk-light.woff');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  list-style-type: none;
+  text-decoration: none;
+}
+
+:root {
+  /* Light Mode Colors */
+  --background-light: #f0f8ff;
+  --nav-light: #ffffff;
+  --text-light: #000000;
+  --hover-light: #7fffd4;
+  --like-light: #5F59FF;
+  --options-light: rgba(255, 255, 255, 0.856);
+
+  /* Dark Mode Colors */
+  --background-dark: #1e2225;
+  --nav-dark: rgb(21, 20, 26);
+  --text-dark: #ffffff;
+  --hover-dark: #5F59FF;
+  --like-dark: #7fffd4;
+  --options-dark: rgba(21, 20, 26, 0.911);
+
+  /* Transitions */
+  --transition: background 0.3s ease-in-out, color 0.6s ease-in-out; 
+}
+
+body.light {
+  --background-color: var(--background-light);
+  --navigation: var(--nav-light);
+  --text-color: var(--text-light);
+  --hover: var(--hover-light);
+  --like: var(--like-light);
+  --options: var(--options-light);
+}
+
+body.dark {
+  --background-color: var(--background-dark);
+  --navigation: var(--nav-dark);
+  --text-color: var(--text-dark);
+  --hover: var(--hover-dark);
+  --like: var(--like-dark);
+  --options: var(--options-dark);
+}
+
+a {
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--text-color);
+  font-family: 'Founders Grotesk Medium';
+}
+
+
+
+
+
+
+
