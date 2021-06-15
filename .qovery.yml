@@ -1,0 +1,11 @@
+---
+application:
+  name: "splashgram"
+  project: "splashgram"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-splashgram"
+  routes:
+  - application_name: "splashgram"
+    paths:
+    - "/*"
