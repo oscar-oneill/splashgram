@@ -1,22 +1,11 @@
 @font-face {
   font-family: 'Founders Grotesk Medium';
-  src: url('./fonts/founders-grotesk-medium.woff');
+  src: url('./fonts/Founders\ Grotesk\ -\ Medium.otf');
 }
 
 @font-face {
   font-family: 'Founders Grotesk Light';
   src: url('./fonts/founders-grotesk-light.woff');
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-synthesis: none;
-  list-style-type: none;
-  text-decoration: none;
 }
 
 :root {
@@ -58,6 +47,17 @@ body.dark {
   --options: var(--options-dark);
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  list-style-type: none;
+  text-decoration: none; 
+}
+
 a {
   color: inherit;
 }
@@ -72,6 +72,7 @@ html {
 
 body {
   color: var(--text-color);
+  background: var(--background-color);
   font-family: 'Founders Grotesk Medium';
 }
 

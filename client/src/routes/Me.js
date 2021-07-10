@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { userContext } from '../Context/userContext'
 import Profile from '../Components/Profile'
+import axios from 'axios'
 
 const Me = () => {
-    const { userData } = useContext(userContext)
+    const token = localStorage.getItem("access_token");
+    const { userData, loggedUsername } = useContext(userContext);
     const [name, setName] = useState(null);
     const [bio, setBio] = useState(null);
     const [location, setLocation] = useState(null);
@@ -16,8 +18,13 @@ const Me = () => {
     const [likes, setLikes] = useState(null);
     const [collections, setCollections] = useState(null);
 
+    const [userPhotos, setUserPhotos] = useState(undefined);
+    const [userLiked, setUserLiked] = useState(undefined);
+    const [photoCollections, setPhotoCollections] = useState(undefined);
+
     document.title = "My Profile on Splashgram"
 
+    // Set Current User's Data
     useEffect(() => {
         if (userData) {
             setName(userData.name)
@@ -34,6 +41,36 @@ const Me = () => {
         }
     }, [userData])
 
+    // Fetch Current User's Photos
+    useEffect(() => {
+        axios.post("/user/photos", {
+            loggedUsername
+        })
+        .then(res => {
+            setUserPhotos(res.data)
+        })
+    }, [token, loggedUsername])
+
+    // Fetch Current User's Liked Photos
+    useEffect(() => {
+        axios.post("/user/likes", {
+            loggedUsername
+        })
+        .then(res => {
+            setUserLiked(res.data)
+        })
+    }, [token, loggedUsername])
+
+    // Fetch Current User's Collections
+    useEffect(() => {
+        axios.post("/user/collections", {
+            loggedUsername
+        })
+        .then(res => {
+            setPhotoCollections(res.data)
+        })
+    }, [token, loggedUsername])
+
     return (
         <>
             <Profile
@@ -48,6 +85,9 @@ const Me = () => {
                 photos={photos}
                 likes={likes}
                 collections={collections}
+                userLiked={userLiked}
+                userPhotos={userPhotos}
+                userCollections={photoCollections}
             />
         </>
     )

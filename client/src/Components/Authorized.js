@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom'
 import { userContext } from '../Context/userContext'
 import DarkMode from '../Components/DarkMode'
 import defaultImage from '../images/default.png'
+import axios from 'axios'
 
 const Authorized = () => {
-    const { userData } = useContext(userContext);
     const optionsRef = useRef(null);
     const [menu, setMenu] = useState(false);
-    const showMenu = () => setMenu(!menu); 
+    const showMenu = () => setMenu(!menu);
 
+    const { userData } = useContext(userContext);
     const [first, setFirst] = useState("");
     const [icon, setIcon] = useState("");
 
@@ -22,14 +23,15 @@ const Authorized = () => {
 
     const logout = (e) => {
         e.preventDefault();
-        localStorage.removeItem("access_token");
-        window.location.reload(false);
+        axios.post("/auth/logout").then((res) => {console.log(res)})
+        localStorage.clear();
+        window.location = "/";
     }
 
     return (
         <>
             <div className="signed_in" onClick={showMenu}>  
-                <span style={{marginBottom: "3px"}}>Welcome, {first}</span>
+                <span style={{marginTop: "6px"}}>Welcome, {first}</span>
                 <img className="signed_icon" src={icon ? icon : defaultImage} alt="avatar"/>
             </div>
             <div ref={optionsRef} className={`nav_menu ${menu ? "active" : "inactive"}`} >

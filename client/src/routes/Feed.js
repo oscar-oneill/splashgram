@@ -41,7 +41,9 @@ const Feed = () => {
           userLiked={data.liked_by_user} // Initial Prop Value
           username={data.user.username}
           userCollectionsID={data.current_user_collections}
-          URL={data.links.html}
+          URL={data.user.links.html}
+          download={data.links.download}
+          downloadLocation={data.links.download_location}
         />
       ))}
     </div>

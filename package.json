@@ -1,10 +1,10 @@
 {
   "name": "backend",
-  "version": "1.0.0",
+  "version": "2.0.2",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "forever start server.js",
     "dev": "nodemon server.js",
     "build": "cd client && npm install && npm run build"
   },
@@ -19,7 +19,8 @@
     "cors": "^2.8.5",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
+    "forever": "^4.0.1",
     "node-fetch": "^2.6.1",
-    "unsplash-js": "^7.0.11"
+    "node-localstorage": "^2.2.1"
   }
 }

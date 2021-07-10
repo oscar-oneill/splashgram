@@ -5,12 +5,12 @@ import axios from 'axios'
 import ExifData from './ExifData'
 import Collections from './Collections'
 
-const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username, userCollectionsID }) => {
-    const { REACT_APP_UNSPLASH_API_KEY } = process.env;
+const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username, userCollectionsID, download, downloadLocation }) => {
     const token = localStorage.getItem("access_token");
     const { userData } = useContext(userContext);
-    const [loggedUser, setLoggedUser] = useState("");
+    const [loggedUsername, setLoggedUsername] = useState("");
     const [collections, setCollections] = useState("");
+    const [singlePhoto, setSinglePhoto] = useState("");
 
     const likedRef = useRef(null);
     const [liked, setLiked] = useState(false);
@@ -29,6 +29,10 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
     const [collection, setCollection] = useState(false);
     const showCollections = () => setCollection(!collection);
 
+    const errorRef = useRef(null);
+    const [likeError, setLikeError] = useState(false);
+    const showError = () => setLikeError(!likeError);
+
     const [make, setMake] = useState("");
     const [model, setModel] = useState("");
     const [aperture, setAperture] = useState("");
@@ -40,6 +44,11 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
     const [width, setWidth] = useState("");
     const [location, setLocation] = useState("");
     const [views, setViews] = useState("");
+
+    useEffect(() => {
+        const single = window.location.pathname.includes("photo") ? true : false;
+        setSinglePhoto(single)
+    }, [])
 
     useEffect(() => {
         if (exif === true && options === true) {
@@ -55,7 +64,7 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
 
     useEffect(() => {
         if (userData) {
-            setLoggedUser(userData.username)
+            setLoggedUsername(userData.username)
         }
     }, [userData])
 
@@ -65,13 +74,9 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
     }
 
     const getExifData = () => {
-        const config = {
-            headers: {
-                Authorization: `Client-ID ${REACT_APP_UNSPLASH_API_KEY}`,
-            },
-        }
-
-        axios.get(`https://api.unsplash.com/photos/${id}`, config)
+        axios.post("/data/exif_data", {
+            id
+        })
         .then(res => {
             setMake(res.data.exif.make)
             setModel(res.data.exif.model)
@@ -87,28 +92,24 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
         })
     }
 
-    // Retrieves List of Collections
+    // Retrieves List of Logged-In User Collections
     const getCollections = () => {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      }
-      axios.get(`https://api.unsplash.com/users/${loggedUser}/collections`, config)
+      axios.post("/user/collections", {
+          loggedUsername
+      })
       .then(res => {
           setCollections(res.data)
       })
     }
 
-    const download = () => {
-        const config = {
-            headers: {
-                Authorization: `Client-ID ${REACT_APP_UNSPLASH_API_KEY}`,
-            },
-        }
-        axios.get(`https://api.unsplash.com/photos/${id}/download`, config)
+    // Triggers photo download from API using "download_location" endpoint
+    const triggerDownload = () => {
+        axios.post("/data/download", {
+            id,
+            downloadLocation
+        })
         .then(res => {
-            window.location = res.data.url
+            console.log(res.data)
         })
     }
 
@@ -116,32 +117,24 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
 
     const likesHandler = () => {
         if (updateLikes === false) {
-            axios({
-                method: "post",
-                url: `https://api.unsplash.com/photos/${id}/like`,
-                headers: {
-                    'Accept-Version': 'v1',
-                    'Authorization': `Bearer ${token}`
-                }
+            axios.post("/media/like_photo", {
+                id
             })
             .then(res => {
-                    setLikedCount(res.data.photo.likes)
-                    setUpdateLikes(res.data.photo.liked_by_user)
-                })
-            .catch(error => {
-                if (error) {
-                    alert("Please sign in with Unsplash to perform this action.")
+                setLikedCount(res.data.photo.likes)
+                setUpdateLikes(res.data.photo.liked_by_user)
+            })
+            .catch(err => {
+                if (err) {
+                    showError()
                 }
             })
         }
 
         if (updateLikes === true) {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-            axios.delete(`https://api.unsplash.com/photos/${id}/like`, config)
+            axios.post("/media/remove_like", {
+                id
+            })
             .then(res => {
                 setLikedCount(res.data.photo.likes)
                 setUpdateLikes(res.data.photo.liked_by_user)
@@ -161,8 +154,14 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
                     </div>
                 </div>
             </a>
+
             <div className={"photo-box"}>
                 <img src={image} alt={alt}/>
+
+                <div ref={errorRef} className={`like_error ${likeError ? "active" : "inactive"}`}>
+                    <i className="fas fa-times close-error" onClick={showError}></i>
+                    <span style={{marginTop: "6px"}}>Sign in with Unsplash to perform this action.</span>
+                </div>
 
                 <div ref={exifRef} className={`exif_data ${exif ? "active" : "inactive"}`}>
                     <div className="close" style={{marginBottom: "10px", marginLeft: "3px", cursor: "pointer", height: "auto", width: "25px"}} onClick={showExif}>
@@ -206,11 +205,14 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
 
                 <div ref={optionsRef} className={`photo-options ${options ? "active" : "inactive"}`}>
                     <ul className="options_list">
-                        <li onClick={(e) => download(e)}>
-                            <i className="fas fa-arrow-circle-down">
-                                <span className="options-btn">Download Photo</span>
-                            </i>
+                        <li>
+                            <a href={`${download}?force=true`} onClick={(e) => triggerDownload(e)}>
+                                <i className="fas fa-arrow-circle-down">
+                                    <span className="options-btn">Download Photo</span>
+                                </i>
+                            </a>
                         </li>
+
                         <li className={`collection-btn ${token ? "active" : "inactive"}`} onClick={(e) => {getCollections(e); showCollections(e); showOptions(false)}}>
                             <i className="fas fa-plus">
                                 <span className="options-btn">Add To Collection</span>
@@ -223,10 +225,16 @@ const Media = ({ profile, name, image, alt, likes, userLiked, id, URL, username,
                             </i>
                         </li>
 
+                        <li className={`photo_ext ${!singlePhoto ? "active" : "inactive"}`}>
+                            <a href={`/photo/${id}`} target="_blank" rel="noopener noreferrer nofollow">
+                                <i className="fas fa-external-link-alt">
+                                    <span className="options-btn">Open Photo In New Tab</span>
+                                </i>
+                            </a>
+                        </li>
+
                         <li className="share_photo">
-                            <i className="fas fa-external-link-alt">
-                                <a href={URL} target="_blank" className="options-btn" rel="noopener noreferrer nofollow">View This Photo On Unsplash</a>
-                            </i>
+                            Photo by <a className="photo_name" href={`${URL}?utm_source=splashgram&utm_medium=referral`} target="_blank" rel="noopener noreferrer nofollow">{name}</a> on <a className="referral" href="https://unsplash.com/?utm_source=splashgram&utm_medium=referral" target="_blank" rel="noopener noreferrer nofollow">Unsplash</a>
                         </li>
                     </ul>
                 </div>

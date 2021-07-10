@@ -7,7 +7,7 @@ const Authenticate = () => {
 
     useEffect(() => {
         if (code) {
-            axios.post('/login', {
+            axios.post('/auth/login', {
                 code,
             })
             .then(res => {

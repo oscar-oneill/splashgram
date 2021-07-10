@@ -34,6 +34,7 @@
     font-weight: 700;
     line-height: 0;
     margin-left: 5px;
+    margin-top: 6px;
     height: auto;
     width: auto;
     display: flex;
@@ -89,6 +90,7 @@
 
 .activity-btn {
     display: flex;
+    margin-top: 3px;
 }
 
 .activity-btn i {
@@ -137,6 +139,32 @@
     justify-content: flex-end;
     position: absolute;
     right: 10px;
+}
+
+.like_error {
+    display: none;
+}
+
+.like_error.active {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: #eb6060;
+    color: #000000;
+    letter-spacing: -0.5px;
+    position: absolute;
+    bottom: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.close-error {
+    left: 10px;
+    position: absolute;
+    cursor: pointer;
 }
 
 .exif_data {
@@ -188,8 +216,29 @@
     cursor: pointer;
 }
 
-.options_list li:nth-child(4) {
+.options_list li:first-child {
+    margin-bottom: 13px;
+}
+
+.options_list li:last-child {
     margin-bottom: 0px;
+}
+
+.share_photo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-Size: 13px;
+}
+
+.photo_name {
+    color: var(--like);
+    margin: 0px 3px;
+}
+
+.referral {
+    color: var(--like);
+    margin: 0px 3px;
 }
 
 .collection-btn {
@@ -213,7 +262,6 @@
     flex-direction: column;
     background: var(--options);
     color: var(--text-color);
-    /* position: absolute; */
     bottom: 0;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -232,6 +280,14 @@
     display: flex;
     align-items: center;
     font-size: 14px;
+}
+
+.photo_ext {
+    display: none;
+}
+
+.photo_ext.active {
+    display: flex;
 }
 
 .fa-check-circle {

@@ -8,25 +8,22 @@ import UserProfile from './routes/UserProfile'
 import Feed from './routes/Feed'
 import authenticate from './Hooks/authenticate'
 import { userContext } from './Context/userContext'
+import Photo from './routes/Photo'
 
 function App() {  
-  const token = localStorage.getItem("access_token"); // eslint-disable-next-line
+  const token = localStorage.getItem("access_token"); // eslint-disable-next-line 
   const accessToken = authenticate(); 
   const [userData, setUserData] = useState(undefined);
+  const [loggedUsername, setLoggedUsername] = useState(undefined);
   const [photos, setPhotos] = useState("");
 
+  // Fetch Logged-In User's Profile Data
   useEffect(() => {
     if (token) {
-      axios.get('https://api.unsplash.com/me', {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Accept-Version': 'v1',
-          'Authorization': `Bearer ${token}`
-        }
-      })
+      axios.post('/user/me')
       .then(res => {
         setUserData(res.data)
+        setLoggedUsername(res.data.username)
       })
     }
   }, [token])
@@ -34,11 +31,12 @@ function App() {
   return (
     <Router>
       <div className="App"> 
-        <userContext.Provider value={{ userData, setUserData, photos, setPhotos }}>
+        <userContext.Provider value={{ userData, setUserData, photos, setPhotos, loggedUsername, setLoggedUsername }}>
           <Navigation token={token}/>
           <Route exact path="/" component={Feed}/>
           <Route exact path="/me" render={props => token ? <Me {...props} token={token}/> : <Redirect to="/"/>}/>
           <Route exact path="/user/:username/profile" component={UserProfile}/>
+          <Route exact path="/photo/:id" component={Photo}/>
         </userContext.Provider>
       </div>
     </Router>

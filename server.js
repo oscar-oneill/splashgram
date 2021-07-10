@@ -4,10 +4,8 @@ const cors = require("cors")
 const path = require('path');
 const dotenv = require("dotenv").config()
 const bodyParser = require("body-parser")
-const Unsplash = require("unsplash-js").default
-const { toJson } = require("unsplash-js")
 
-const app = express()
+const app = express();
 const port = process.env.PORT || 9000;
 
 global.fetch = fetch;
@@ -16,38 +14,32 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }))
 
-app.post("/login", async (req, res) => {
-    const code = req.body.code;
+app.use("/auth", require("./routes/login"))
+app.use("/user", require("./routes/user"))
+app.use("/profile", require("./routes/profile"))
+app.use("/data", require("./routes/data"))
+app.use("/media", require("./routes/media"))
+app.use("/main", require("./routes/main"))
 
-    if (code) {
-        console.log("Code:", code);
-    }
+app.get("/authorize", (req, res) => {
+    const authEndpoint = "https://unsplash.com/oauth/authorize";
+    const client_id = process.env.unsplashKey;
+    const redirect_uri = process.env.redirect_uri;
+    const scopes = [
+        "public",
+        "read_user",
+        "write_user",
+        "read_photos",
+        "write_photos",
+        "write_likes",
+        "write_followers",
+        "read_collections",
+        "write_collections",
+    ];
 
-    const params = {
-        client_id: process.env.unsplashKey,
-        client_secret: process.env.unsplashSecret,
-        redirect_uri: process.env.redirect_uri,
-        code: code,
-        grant_type: "authorization_code"
-    }
-
-    const response = await fetch("https://unsplash.com/oauth/token", {
-        method: "POST",
-        headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params)
-    });
-
-    const data = await response.json();
-    console.count("Data Count", data)
-    console.log(data);
-
-    if (!data.error) {
-        res.status(200).send(data)
-    } 
-});
+    const accessUrl = `${authEndpoint}?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scopes.join("+")}&response_type=code`
+    res.redirect(accessUrl)
+})
 
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
@@ -59,5 +51,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port, () => {
-    console.log(`Lift off 💨 💨 🔥 🔥 🚀 ... server is running on PORT: ${port}`)
+    console.log(`Server is running on PORT: ${port}`)
 }); 

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 const Collections = ({title, collectionID, photoID, userCollections}) => {
-    const token = localStorage.getItem("access_token");
     const [status, setStatus] = useState(userCollections);
 
     let arr = [];
@@ -18,16 +17,12 @@ const Collections = ({title, collectionID, photoID, userCollections}) => {
         return val === "true"
     }
 
-    // Adding a Photo to a Collection
+    // Adding/Removing a Photo to/from a Collection
     const addPhoto = () => {
         if (arr.find(checkValue) !== "true") {
-            axios({
-                method: "post",
-                url: `https://api.unsplash.com/collections/${collectionID}/add?photo_id=${photoID}`,
-                headers: {
-                    'Accept-Version': 'v1',
-                    'Authorization': `Bearer ${token}`
-                }
+            axios.post("/media/add_photo", {
+                photoID,
+                collectionID
             })
             .then(res => {
                 setStatus(res.data.photo.current_user_collections)
@@ -35,13 +30,9 @@ const Collections = ({title, collectionID, photoID, userCollections}) => {
         } 
 
         if (arr.find(checkValue) === "true") {
-            axios({
-                method: "delete",
-                url: `https://api.unsplash.com/collections/${collectionID}/remove?photo_id=${photoID}`,
-                headers: {
-                    'Accept-Version': 'v1',
-                    'Authorization': `Bearer ${token}`
-                }
+            axios.post("/media/add_photo", {
+                photoID,
+                collectionID
             })
             .then(res => {
                 setStatus(res.data.photo.current_user_collections)
