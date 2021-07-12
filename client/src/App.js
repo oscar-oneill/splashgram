@@ -9,6 +9,7 @@ import Feed from './routes/Feed'
 import authenticate from './Hooks/authenticate'
 import { userContext } from './Context/userContext'
 import Photo from './routes/Photo'
+import Search from './routes/Search'
 
 function App() {  
   const token = localStorage.getItem("access_token"); // eslint-disable-next-line 
@@ -37,6 +38,7 @@ function App() {
           <Route exact path="/me" render={props => token ? <Me {...props} token={token}/> : <Redirect to="/"/>}/>
           <Route exact path="/user/:username/profile" component={UserProfile}/>
           <Route exact path="/photo/:id" component={Photo}/>
+          <Route exact path="/search/results/:query" component={Search}/>
         </userContext.Provider>
       </div>
     </Router>

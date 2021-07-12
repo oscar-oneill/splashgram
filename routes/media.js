@@ -5,12 +5,6 @@ const { LocalStorage } = require("node-localstorage");
 let localStorage = new LocalStorage('./scratch'); 
 let token = localStorage.getItem('access_token');
 
-if (token == null) {
-    console.log("No token present.")
-} else {
-    console.log("Token:", token)
-}
-
 // These routes assume that a user is logged in
 
 // Liking a photo

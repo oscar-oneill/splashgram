@@ -8,43 +8,16 @@ import Login from './Login'
 
 const Navigation = ({token}) => {
     const [search, setSearch] = useState("");
-    const [page, setPage] = useState("");
-    const [order, setOrder] = useState("");
-    const [query, setQuery] = useState(""); // eslint-disable-next-line
     const { photos, setPhotos } = useContext(userContext);
-
-    // Set random search query, order and page when page loads
-    useEffect(() => {
-        const terms = ["new york", "los angeles", "seattle", "miami", "hollywood", "brooklyn", "beach", "waves", "palm trees", "miami beach", "madrid", "forest", "desert", "random", "neon", "wallpaper", "nyc", "mediterranean", "spring", "summer", "sunrise", "sunset", "morning", "afternoon", "sao paolo", "barcelona", "istanbul", "monaco", "wonder", "bliss", "serenity"];
-        const randomized = Math.floor(Math.random() * terms.length);
-        setQuery(terms[randomized])
-    }, [])
-
-    useEffect(() => {
-        const nums = ["1", "2", "3", "4", "5", "6", "7"];
-        const randomized = Math.floor(Math.random() * nums.length);
-        setPage(nums[randomized])
-    }, [])
-
-    useEffect(() => {
-        const sorting = ["latest", "oldest", "popular"];
-        const randomized = Math.floor(Math.random() * sorting.length);
-        setOrder(sorting[randomized])
-    }, [])
 
     useEffect(() => {
         getPhotos() // eslint-disable-next-line
-    }, [query])
+    }, [])
 
     const getPhotos = () => {
-        axios.post("/main/feed", {
-            query, 
-            order, 
-            page
-        })
+        axios.post("/main/feed")
         .then(res => {
             setPhotos(res.data.results)
-            
         })
     }
 
@@ -54,7 +27,7 @@ const Navigation = ({token}) => {
 
     const getSearch = e => {
         e.preventDefault();
-        setQuery(search)
+        window.location = `/search/results/${search}`
     }
 
     return (

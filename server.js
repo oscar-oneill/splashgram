@@ -4,6 +4,9 @@ const cors = require("cors")
 const path = require('path');
 const dotenv = require("dotenv").config()
 const bodyParser = require("body-parser")
+const { LocalStorage } = require("node-localstorage");
+let localStorage = new LocalStorage('./scratch'); 
+let token = localStorage.getItem('access_token');
 
 const app = express();
 const port = process.env.PORT || 9000;
@@ -20,6 +23,7 @@ app.use("/profile", require("./routes/profile"))
 app.use("/data", require("./routes/data"))
 app.use("/media", require("./routes/media"))
 app.use("/main", require("./routes/main"))
+app.use("/search", require("./routes/search"))
 
 app.get("/authorize", (req, res) => {
     const authEndpoint = "https://unsplash.com/oauth/authorize";
@@ -48,6 +52,12 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname, './client/build', 'index.html'));
   });
+}
+
+if (token == null) {
+    console.log("No token present.")
+} else {
+    console.log("Token:", token)
 }
 
 app.listen(port, () => {

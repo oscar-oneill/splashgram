@@ -5,7 +5,7 @@ import Media from '../Components/Media'
 const Feed = () => {
   const { photos } = useContext(userContext);
   const [media, setMedia] = useState("");
-  document.title = "Splashgram"
+  document.title = "Home | Splashgram"
 
   useEffect(() => {
     if (photos) {

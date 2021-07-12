@@ -35,17 +35,14 @@ router.post("/login", async (req, res) => {
 
     if (!data.error) {
         res.status(200).send(data);
-    } 
-
-    process.exit(1);
+    }
+    process.exit(1)
 });
 
 router.post("/logout", (req, res) => {
     console.log("User has logged out...")
-    localStorage.clear()
-    process.exit(1);
+    localStorage.removeItem('access_token')
+    process.exit(1)
 });
 
 module.exports = router;
-
-
