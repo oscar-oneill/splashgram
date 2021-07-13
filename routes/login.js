@@ -36,13 +36,13 @@ router.post("/login", async (req, res) => {
     if (!data.error) {
         res.status(200).send(data);
     }
-    process.exit(1)
+    process.exit(0);
 });
 
 router.post("/logout", (req, res) => {
     console.log("User has logged out...")
     localStorage.removeItem('access_token')
-    process.exit(1)
+    process.exit(0);
 });
 
 module.exports = router;

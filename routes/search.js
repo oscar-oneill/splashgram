@@ -15,8 +15,6 @@ const sorting = ["latest", "oldest", "popular"];
 const randomizeSorting = Math.floor(Math.random() * sorting.length);
 const order = sorting[randomizeSorting];
 
-console.log(page, order)
-
 router.post("/results", async (req, res) => {
     const query = req.body.query;
     
