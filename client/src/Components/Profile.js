@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import '../styles/Profile.css'
 import defaultImage from '../images/default.png'
-import Media from '../Components/Media'
-import ProfileCollections from '../Components/ProfileCollections'
+import Media from './Media'
+import ProfileCollections from './ProfileCollections'
 
 const Profile = ({name, bio, location, followers, following, downloads, portfolio, image, photos, likes, collections, userLiked, userPhotos, userCollections}) => {
     let formatter = new Intl.NumberFormat('en', {notation: 'compact'});
